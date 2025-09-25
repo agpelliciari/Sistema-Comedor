@@ -1,1 +1,21 @@
 \section{Arquitectura de Software}
+
+El sistema a implementar para cumplir con los requisitos funcionales pueden ser
+descripto en función de los siguientes:
+
+• Ser accesible a múltiples usuarios.
+• Permitir que los usuarios puedan interactuar con el sistema cumpliendo diferentes roles y
+garantizar que ciertas funcionalidades estén disponibles sólo para algunos roles.
+• Realizar validaciones sobre las operaciones que los usuarios intentan llevar a cabo, de
+manera de garantizar el cumplimiento de las reglas de negocio y la consistencia de la
+información almacenada.
+• Permitir operaciones tanto de actualización como de consulta, de lo cual se deriva que se
+debe almacenar el resultado de las operaciones efectuadas en algún medio persistente. 
+
+Se decidió utilizar un patrón de arquitectura Enterprise, vinculado con el patron de layer. Se definieron las siguientes capas:
+\begin{itemize}
+        \item \textbf{Capa de presentación}: Encargada en presentar la información a los distintos usuario y permitiéndo, a partir de eventos generados por el usuario, interactuar con la capa de servicio.
+        \item \textbf{Capa de servicio}: Brinda las funcionalidades necesarias para los distintos casos de uso a la capa de presentación e interactua con la capa de negocio.  
+        \item \textbf{Capa de negocio}: Implementa todas las reglas de negocio necesarias para que se cumplan los requisitos pedidos.
+        \item \textbf{Capa de persistencia}: Ofrece a la capa de negocio el servicio de persistir, almacenar y recuperar la información.
+\end{itemize}
