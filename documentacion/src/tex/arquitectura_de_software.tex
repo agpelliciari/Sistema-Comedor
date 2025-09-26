@@ -1,21 +1,32 @@
 \section{Arquitectura de Software}
 
-El sistema a implementar para cumplir con los requisitos funcionales pueden ser
-descripto en función de los siguientes:
-
-• Ser accesible a múltiples usuarios.
-• Permitir que los usuarios puedan interactuar con el sistema cumpliendo diferentes roles y
-garantizar que ciertas funcionalidades estén disponibles sólo para algunos roles.
-• Realizar validaciones sobre las operaciones que los usuarios intentan llevar a cabo, de
-manera de garantizar el cumplimiento de las reglas de negocio y la consistencia de la
-información almacenada.
-• Permitir operaciones tanto de actualización como de consulta, de lo cual se deriva que se
-debe almacenar el resultado de las operaciones efectuadas en algún medio persistente. 
-
-Se decidió utilizar un patrón de arquitectura Enterprise, vinculado con el patron de layer. Se definieron las siguientes capas:
+Se deciidió utilizar un patrón de arquitectura enterprise, vinculado con el patron de layer. Se definieron las siguientes capas:
 \begin{itemize}
-        \item \textbf{Capa de presentación}: Encargada en presentar la información a los distintos usuario y permitiéndo, a partir de eventos generados por el usuario, interactuar con la capa de servicio.
-        \item \textbf{Capa de servicio}: Brinda las funcionalidades necesarias para los distintos casos de uso a la capa de presentación e interactua con la capa de negocio.  
+        \item \textbf{Capa de presentación}: Encargada en presentar la información a los distintos usuario y permitiéndo, a partir de eventos generados por el usuario, interactuar con la capa de servicio. Siguiendo la arquitecura enterprise esta capa brindara 3 vistas distintas dependiendo el tipo de usuario que acceda a la aplicación (Estudiante, Cocinero y Encargado).
+        \item \textbf{Capa de servicio}: Brinda las funcionalidades necesarias, a travez de una API REST, para los distintos casos de uso a la capa de presentación e interactua con la capa de negocio.  
         \item \textbf{Capa de negocio}: Implementa todas las reglas de negocio necesarias para que se cumplan los requisitos pedidos.
         \item \textbf{Capa de persistencia}: Ofrece a la capa de negocio el servicio de persistir, almacenar y recuperar la información.
 \end{itemize}
+
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, minimum width=8cm, minimum height=1.2cm, align=center},
+    arrow/.style={-{Latex}, thick, blue},
+    arrowup/.style={-{Latex}, thick, black},
+    node distance=1.2cm
+]
+\node[box, dashed] (presentacion) {Capa de presentación  \textit{(Front End)}};
+\node[box, below=of presentacion] (navegador) {Capa de navegador  \textit{(API Rest)}};
+\node[box, below=of navegador] (servicio) {Capa de servicio \\ \textit{(Lógica del negocio)}};
+\node[box, below=of servicio] (basedatos) {Capa de persistencia \\ \textit{(Base de datos)}};
+
+\draw[arrowdown] (presentacion.south west) ++(1.5,0) -- ++(0,-0.6) |- (navegador.north west);
+\draw[arrowup]   (navegador.north east) ++(-1.5,0) -- ++(0,0.6) |- (presentacion.south east);
+
+\draw[arrowdown] (navegador.south west) ++(1.5,0) -- ++(0,-0.6) |- (servicio.north west);
+\draw[arrowup]   (servicio.north east) ++(-1.5,0) -- ++(0,0.6) |- (navegador.south east);
+
+\draw[arrowdown] (servicio.south west) ++(1.5,0) -- ++(0,-0.6) |- (basedatos.north west);
+\draw[arrowup]   (basedatos.north east) ++(-1.5,0) -- ++(0,0.6) |- (servicio.south east);
+
+
+\end{tikzpicture}
