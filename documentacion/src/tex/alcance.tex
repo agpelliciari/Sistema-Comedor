@@ -1,1 +1,66 @@
 \section{Alcance}
+
+\subsection{Propósito del sistema}
+Nuestro sistema de gestión para comedores universitarios busca modernizar la experiencia de estudiantes y personal, permitiendo a los primeros consultar el menú, realizar y pagar pedidos desde la web/dispositivo móvil, y brindando al personal herramientas para gestionar pedidos, preparación en cocina y disponibilidad de productos en tiempo real. Adicionalmente, facilita la administración del menú, stock, promociones y accesos del personal.
+
+\subsection{Alcance funcional}
+\subsubsection*{Actores principales}
+\begin{itemize}
+  \item \textbf{Estudiante}: se registra y autentica, gestiona su perfil, consulta menú y disponibilidad, realiza y paga pedidos, consulta estado y recoge.
+  \item \textbf{Personal de cocina/caja}: visualiza pedidos entrantes, cambia estados, gestiona disponibilidad operativa.
+  \item \textbf{Encargado/a del comedor}: administra menú, ingredientes, combos/paquetes, stock, promociones, y acceso del personal.
+\end{itemize}
+
+\subsubsection*{Funciones incluidas}
+\begin{itemize}
+  \item \textbf{Gestión de usuarios}: registro con validación de email; autenticación y recuperación de cuenta; perfil con nombre, apellido, email, foto, edad, género y domicilio.
+  \item \textbf{Catálogo y composición de productos}:
+    \begin{itemize}
+      \item Ítems individuales y \emph{combos} (paquetes con precio especial).
+      \item Ítems compuestos por ingredientes; dependencia de disponibilidad por ingrediente.
+      \item Disponibilidad automática: si falta un ingrediente clave, los ítems/combos afectados quedan \emph{no disponibles} para los estudiantes.
+    \end{itemize}
+  \item \textbf{Gestión de stock}: alta/baja/ajuste de ingredientes y productos; disparadores para reposición (manual inicialmente).
+  \item \textbf{Promociones dinámicas}: reglas configurables (p.ej., ``con un sándwich, un café gratis'', 3x2, descuentos por día o por monto).
+  \item \textbf{Ciclo de vida del pedido}:
+    \begin{enumerate}
+      \item \emph{Confirmado} por el estudiante.
+      \item \emph{En preparación} por personal de cocina.
+      \item \emph{Listo para retirar}.
+      \item \emph{Completado} al momento del retiro.
+    \end{enumerate}
+    \noindent \emph{Cancelación} permitida mientras no haya comenzado la preparación.
+  \item \textbf{Backoffice del encargado}: ABM de menú, ingredientes, combos, promociones y gestión de accesos del personal.
+  \item \textbf{Pagos}: registro de pagos asociados al pedido
+\end{itemize}
+
+\subsection{Alcance no funcional}
+\begin{itemize}
+  \item \textbf{Seguridad y autenticación}: autenticación con tokens (JWT), almacenamiento seguro de credenciales.
+  \item \textbf{Disponibilidad}: servicio operativo en horario del comedor; tolerancia a picos en horarios pico.
+  \item \textbf{Rendimiento}: respuesta rapidas para consultas de menú bajo carga típica; actualización de estados en tiempo real en vistas de cocina/pedidos.
+  \item \textbf{Consistencia}: para operaciones críticas (estado del pedido, disponibilidad de ingredientes).
+  \item \textbf{Calidad verificable}: cobertura de tests $\geq 80\%$ en backend.
+  \item \textbf{Compatibilidad}: API documentada (Swagger/Postman); contenedores Docker para despliegue.
+\end{itemize}
+
+\subsection{Stakeholders y usuarios}
+\begin{itemize}
+  \item \textbf{Estudiantes} (usuarios finales).
+  \item \textbf{Personal del comedor} (cocina/caja).
+  \item \textbf{Encargado/a del comedor} (administración y configuración).
+  \item \textbf{Equipo de TI/desarrollo} (operación y evolución).
+\end{itemize}
+
+\subsection{MVP / Early Testable Product}
+\label{subsec:mvp}
+\begin{itemize}
+  \item Registro, autenticación, validación de email y recuperación de contraseña.
+  \item Menú con disponibilidad por stock e ingredientes.
+  \item Flujo de pedido de extremo a extremo.
+  \item Panel de cocina y backoffice mínimos.
+  \item Registro de pagos.
+  \item API y despliegue en Docker para pruebas.
+\end{itemize}
+
+\newpage
