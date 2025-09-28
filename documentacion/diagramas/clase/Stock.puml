@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Stock {
+    - HashMap<String, Int> ingredients
+    + hasIngredients(String, Int): Bool
+    + consumeIngredients(String, Int)
+    + addIngredient(String, Int)
+}
+
+Stock <.- Menu
+
+class Menu {
+    - products: List<Product>
+    - combos: List<Combo>
+    + getAvailableProducts(): List<Product>
+    + getAvailableCombos(): List<Combo>
+    + removeProduct(Product)
+    + removeCombo(Product)
+    + addProduct(Product)
+    + addCombo(Combo)
+}
+
+
+@enduml
+

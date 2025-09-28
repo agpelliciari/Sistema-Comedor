@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Order {
+    combos: List<Combo>
+    products: List<Product>
+}
+
+Order -> OrderState
+
+enum OrderState {
+ORDERED
+IN_PROGRESS
+READY
+COMPLETED
+CANCELED
+}
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+enum AccountStatus {
+ENABLED
+DISABLED
+}
+
+User -> AccountStatus
+
+abstract class User {
+    - firstName
+    - lastName
+    - email
+    - photo
+    - birthdate
+    - gender
+    - homeAddress
+    + updateEmail()
+    + updatePhoto()
+    + updateHomeAddress()
+    + logOut()
+    + getAge(): Int
+}
+
+class Manager {
+    + modifyMenu()
+    + enableUser()
+    + disableUser()
+}
+
+class Cook {
+    + modifyOrderState()
+}
+
+class Customer {
+    + cancelOrder()
+}
+
+User <|-- Manager
+User <|-- Cook
+User <|-- Customer
+
+@enduml

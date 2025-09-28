@@ -1,0 +1,54 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Product {
+    - name
+    - price
+    - ingredients: HashMap<String, Int>
+    + getPrice(): Int
+    + getName(): String
+    + getIngredients(): HashMap<String, Int>
+}
+@enduml
+
+@startuml
+
+' Product "*"<-- Combo
+
+abstract Combo {
+    - days: List<Day>
+    + getPrice(): Int
+    + isAvailableToday(): Bool
+    + getAvailableDays(): List<Day>
+}
+
+class GiftDiscountCombo {
+    - requiredProducts: HashMap<Product, Int>
+    - giftProducts: HashMap<Product, Int>
+}
+
+class QuantityDiscountCombo {
+    - product: Product
+    - requiredQuantity: Int
+    - giftQuantity: Int
+}
+
+class PercentageDiscountCombo {
+    - product: Product
+    - percentage: Int
+}
+
+class FixedDiscountCombo {
+    - discount: Int
+    - minimum: Int
+}
+
+' solo contar los x primeros
+Combo <|-- QuantityDiscountCombo
+
+Combo <|-- GiftDiscountCombo
+Combo <|-- PercentageDiscountCombo
+Combo <|-- FixedDiscountCombo
+Combo <|-- NoDiscountCombo
+
+@enduml
