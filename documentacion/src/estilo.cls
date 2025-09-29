@@ -110,7 +110,7 @@
 	{\large -  \\[1cm]}                          % Fecha
 	\begin{flushleft}
         \large Rodrigo Rotondo \hfill \large 109210 \\[0.3cm]
-        \large Tomas Crojo \hfill \large 111760 \\[0.3cm]
+        \large Tomas Conti \hfill \large 111760 \\[0.3cm]
         \large Daniela Gomez \hfill \large 107652 \\[0.3cm]
         \large Valentin Marturet \hfill \large 104526 \\[0.3cm]
         \large Santiago Henseler \hfill \large 110732 \\[0.3cm]
