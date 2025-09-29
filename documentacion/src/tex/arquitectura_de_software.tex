@@ -1,19 +1,16 @@
 \section{Arquitectura de Software}
 
-Se deciidió utilizar un patrón de arquitectura enterprise, vinculado con el patron de layer. Se definieron las siguientes capas:
-\begin{itemize}
-        \item \textbf{Capa de presentación}: Encargada en presentar la información a los distintos usuario y permitiéndo, a partir de eventos generados por el usuario, interactuar con la capa de servicio. Siguiendo la arquitecura enterprise esta capa brindara 3 vistas distintas dependiendo el tipo de usuario que acceda a la aplicación (Estudiante, Cocinero y Encargado).
-        \item \textbf{Capa de servicio}: Brinda las funcionalidades necesarias, a travez de una API, para los distintos casos de uso a la capa de presentación e interactua con la capa de negocio.  
-        \item \textbf{Capa de negocio}: Implementa todas las reglas de negocio necesarias para que se cumplan los requisitos pedidos.
-        \item \textbf{Capa de persistencia}: Ofrece a la capa de negocio el servicio de persistir, almacenar y recuperar la información.
-\end{itemize}
+Se decidió utilizar un patrón de arquitectura enterprise, vinculado con el patron de layer. Se definieron las siguientes capas:
 
+\begin{center}
 \begin{tikzpicture}[
     box/.style={rectangle, draw, minimum width=8cm, minimum height=1.2cm, align=center},
     arrow/.style={-{Latex}, thick, blue},
     arrowup/.style={-{Latex}, thick, black},
+    arrowdown/.style={-{Latex}, thick, black},
     node distance=1.2cm
 ]
+
 \node[box, dashed] (presentacion) {Capa de presentación  \textit{(Front End)}};
 \node[box, below=of presentacion] (navegador) {Capa de navegador  \textit{(API)}};
 \node[box, below=of navegador] (servicio) {Capa de servicio \\ \textit{(Lógica del negocio)}};
@@ -27,6 +24,14 @@ Se deciidió utilizar un patrón de arquitectura enterprise, vinculado con el pa
 
 \draw[arrowdown] (servicio.south west) ++(1.5,0) -- ++(0,-0.6) |- (basedatos.north west);
 \draw[arrowup]   (basedatos.north east) ++(-1.5,0) -- ++(0,0.6) |- (servicio.south east);
-
-
 \end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+        \item \textbf{Capa de presentación}: Encargada en presentar la información a los distintos usuario y permitiéndo, a partir de eventos generados por el usuario, interactuar con la capa de servicio. Siguiendo la arquitectura enterprise esta capa brindara 3 vistas distintas dependiendo el tipo de usuario que acceda a la aplicación (Estudiante, Cocinero y Encargado).
+        \item \textbf{Capa de servicio}: Brinda las funcionalidades necesarias, a traves de una API, para los distintos casos de uso a la capa de presentación e interactua con la capa de negocio.  
+        \item \textbf{Capa de negocio}: Implementa todas las reglas de negocio necesarias para que se cumplan los requisitos pedidos.
+        \item \textbf{Capa de persistencia}: Ofrece a la capa de negocio el servicio de persistir, almacenar y recuperar la información.
+\end{itemize}
+
+\newpage
