@@ -1,44 +1,22 @@
 @startuml
-'https://plantuml.com/class-diagram
 
-enum AccountStatus {
-ENABLED
-DISABLED
+enum Role {
+  ROLE_ADMIN
+  ROLE_EMPLOYEE
+  ROLE_CLIENT
 }
 
-User -> AccountStatus
+class User {
+    - id : Long
+    - username : String
+    - password : String
+    - email : String
+    - emailVerified : boolean
 
-abstract class User {
-    - firstName
-    - lastName
-    - email
-    - photo
-    - birthdate
-    - gender
-    - homeAddress
-    + updateEmail()
-    + updatePhoto()
-    + updateHomeAddress()
-    + logOut()
-    + getAge(): Int
+    + User(username, password, role, name, surname, email, age, address, photo) 
+    + setEmailVerified()
 }
 
-class Manager {
-    + modifyMenu()
-    + enableUser()
-    + disableUser()
-}
-
-class Cook {
-    + modifyOrderState()
-}
-
-class Customer {
-    + cancelOrder()
-}
-
-User <|-- Manager
-User <|-- Cook
-User <|-- Customer
+User --> Role : tiene
 
 @enduml

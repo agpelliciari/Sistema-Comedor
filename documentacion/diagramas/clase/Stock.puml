@@ -1,26 +1,46 @@
 @startuml
-'https://plantuml.com/class-diagram
 
-class Stock {
-    - HashMap<String, Int> ingredients
-    + hasIngredients(String, Int): Bool
-    + consumeIngredients(String, Int)
-    + addIngredient(String, Int)
+interface Stockable {
+    + isAvailable(requiredQuantity: int) : boolean
 }
 
-Stock <.- Menu
-
-class Menu {
-    - products: List<Product>
-    - combos: List<Combo>
-    + getAvailableProducts(): List<Product>
-    + getAvailableCombos(): List<Combo>
-    + removeProduct(Product)
-    + removeCombo(Product)
-    + addProduct(Product)
-    + addCombo(Combo)
+interface Priceable {
+    + getPrice() : float
 }
 
+class Ingredient {
+    - id : long
+    - name : String
+    - quantity : int
+    + isAvailable(requiredQuantity: int) : boolean
+}
+
+Stockable <|.. Ingredient
+Product "1" o-- "*" Ingredient
+
+abstract class OrderItem {
+    - id : Long
+    - name : String
+    - price : float
+    + getPrice() : float
+    + isAvailable(requiredQuantity: int) : boolean
+    + getIngredients() : Map<Ingredient, Integer>
+}
+
+Stockable <|.. OrderItem
+Priceable <|.. OrderItem
+
+class Product extends OrderItem {
+    - category : String
+    + getIngredients() : Map<Ingredient, Integer>
+    + isAvailable(productQuantity: int) : boolean
+}
+
+class Combo extends OrderItem {
+    + getIngredients() : Map<Ingredient, Integer>
+    + isAvailable(comboQuantity: int) : boolean
+}
+
+Combo "1" o-- "*" Product
 
 @enduml
-
