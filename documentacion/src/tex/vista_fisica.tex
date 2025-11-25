@@ -1,5 +1,12 @@
 \section{Vista Física}
-Se va a utilizar una arquitectura cliente servidor tipica, en la cual el backend y el acceso a la base de datos van a estar alojados en el mismo servidor y el frontend va a estar alojado en otro.
+
+Se utiliza una arquitectura web de múltiples capas desplegada sobre contenedores
+Docker. En el entorno actual, el \textbf{frontend} y el \textbf{backend} se
+ejecutan como servicios independientes, junto con un servidor \textbf{nginx}
+(ingress) que actúa como reverse proxy y una instancia de \textbf{PostgreSQL}
+para la base de datos. Todos estos servicios se alojan en un mismo servidor
+físico, comunicándose entre sí a través de una red interna de Docker.
+
 \begin{figure}[htbp]
           \centering
           \includegraphics[width=0.9\textwidth]{img/Vista_fisica.png}
@@ -7,6 +14,13 @@ Se va a utilizar una arquitectura cliente servidor tipica, en la cual el backend
           \label{fig:pysh}
         \end{figure}
 
-En negro se marcaron las conexiones que se dan por primera vez para solicitar la pagina web al servidor. Luego la aplicación se comunicara todo el tiempo con el servidor backend mediante la API de la capa de servicio.
+El cliente accede a la aplicación mediante un navegador web, realizando
+peticiones HTTP al servidor \textbf{ingress}. En el primer acceso, nginx sirve
+los recursos estáticos del frontend (HTML, CSS, JavaScript) y el navegador
+carga la SPA. A partir de ese momento, la aplicación cliente se comunica
+principalmente con el \textbf{servidor backend} a través de la API REST para
+todas las operaciones de negocio (autenticación, pedidos, menú, descuentos,
+etc.), mientras que el backend se encarga de acceder a la base de datos
+en el contenedor de \textbf{PostgreSQL}.
 
 \newpage
