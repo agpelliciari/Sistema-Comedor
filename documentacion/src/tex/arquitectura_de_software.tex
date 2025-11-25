@@ -1,37 +1,44 @@
 \section{Arquitectura de Software}
 
-Se decidió utilizar un patrón de arquitectura enterprise, vinculado con el patron de layer. Se definieron las siguientes capas:
+Se decidió utilizar un patrón de arquitectura enterprise, vinculado con el patrón por capas. Se definieron las siguientes capas:
 
 \begin{center}
+
+\shorthandoff{<>}
+
 \begin{tikzpicture}[
     box/.style={rectangle, draw, minimum width=8cm, minimum height=1.2cm, align=center},
-    arrow/.style={-{Latex}, thick, blue},
-    arrowup/.style={-{Latex}, thick, black},
-    arrowdown/.style={-{Latex}, thick, black},
+    >=Latex,
     node distance=1.2cm
 ]
 
-\node[box, dashed] (presentacion) {Capa de presentación  \textit{(Front End)}};
-\node[box, below=of presentacion] (controlador) {Capa de controlador  \textit{(API)}};
-\node[box, below=of controlador] (servicio) {Capa de servicio \\ \textit{(Lógica del negocio)}};
-\node[box, below=of servicio] (basedatos) {Capa de persistencia \\ \textit{(Base de datos)}};
+\node[box, dashed] (presentacion) {Capa de presentación \\ \textit{(Front End)}};
+\node[box, below=of presentacion] (controlador) {Capa de controlador \\ \textit{(API REST)}};
+\node[box, below=of controlador] (servicio) {Capa de servicio \\ \textit{(Lógica de negocio y dominio)}};
+\node[box, below=of servicio] (basedatos) {Capa de persistencia \\ \textit{(Repositorios y base de datos)}};
 
-\draw[arrowdown] (presentacion.south west) ++(1.5,0) -- ++(0,-0.6) |- (navegador.north west);
-\draw[arrowup]   (controlador.north east) ++(-1.5,0) -- ++(0,0.6) |- (controlador.south east);
+\draw[->] (presentacion) -- (controlador);
+\draw[->] (controlador) -- (servicio);
+\draw[->] (servicio) -- (basedatos);
 
-\draw[arrowdown] (controlador.south west) ++(1.5,0) -- ++(0,-0.6) |- (servicio.north west);
-\draw[arrowup]   (servicio.north east) ++(-1.5,0) -- ++(0,0.6) |- (controlador.south east);
+\draw[->] (controlador) -- (presentacion);
+\draw[->] (servicio) -- (controlador);
+\draw[->] (basedatos) -- (servicio);
 
-\draw[arrowdown] (servicio.south west) ++(1.5,0) -- ++(0,-0.6) |- (basedatos.north west);
-\draw[arrowup]   (basedatos.north east) ++(-1.5,0) -- ++(0,0.6) |- (servicio.south east);
 \end{tikzpicture}
+
+\shorthandon{<>}
+
 \end{center}
 
 \begin{itemize}
-        \item \textbf{Capa de presentación}: Encargada en presentar la información a los distintos usuario y permitiéndo, a partir de eventos generados por el usuario, interactuar con la capa de servicio. Siguiendo la arquitectura enterprise esta capa brindara 3 vistas distintas dependiendo el tipo de usuario que acceda a la aplicación (Estudiante, Cocinero y Encargado).
-        \item \textbf{Capa de servicio}: Brinda las funcionalidades necesarias, a traves de una API, para los distintos casos de uso a la capa de presentación e interactua con la capa de negocio.  
-        \item \textbf{Capa de negocio}: Implementa todas las reglas de negocio necesarias para que se cumplan los requisitos pedidos.
-        \item \textbf{Capa de persistencia}: Ofrece a la capa de negocio el servicio de persistir, almacenar y recuperar la información.
+  \item \textbf{Capa de presentación}: encargada de presentar la información a los distintos usuarios y permitir, a partir de eventos generados por el usuario, interactuar con la capa de controlador. Siguiendo la arquitectura enterprise, esta capa brinda vistas distintas dependiendo del tipo de usuario que accede a la aplicación (estudiante/cliente, personal de cocina/caja y encargado/administrador).
+
+  \item \textbf{Capa de controlador}: expone una API REST que recibe las solicitudes de la capa de presentación, realiza el mapeo entre las llamadas HTTP y los casos de uso del sistema, y delega la lógica de negocio en la capa de servicio y negocio. También es responsable de aplicar las políticas de seguridad de la API (autenticación y autorización por rol).
+
+  \item \textbf{Capa de servicio y negocio}: implementa las funcionalidades necesarias para los distintos casos de uso, orquestando las reglas de negocio del dominio (pedidos, menú, descuentos, usuarios, etc.). Esta capa encapsula la lógica de aplicación y utiliza la capa de persistencia para acceder a los datos.
+
+  \item \textbf{Capa de persistencia}: ofrece a la capa de servicio y negocio el servicio de persistir, almacenar y recuperar la información, a través de repositorios que abstraen el acceso a la base de datos relacional.
 \end{itemize}
 
 \newpage
