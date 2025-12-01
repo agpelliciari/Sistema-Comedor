@@ -42,32 +42,35 @@ autenticarse usando JWT y renovar su sesión sin reenviar la contraseña.
     \label{fig:de2}
 \end{figure}
 
-\vfill
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\textwidth]{img/Diagrama-de-estados-flujo-cliente}
+    \includegraphics[width=0.9\textwidth]{img/Diagrama-de-estados-flujo-cliente}
     \caption{Diagrama de Estados: Flujo de un Cliente}
     \label{fig:de1}
 \end{figure}
 
-\vfill
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1\textwidth]{img/diagrama_de_clases_productos}
-    \caption{Diagrama de Clases: Combos y Productos}
-    \label{fig:dc2}
-\end{figure}
-\vfill
+El anterior diagrama ilustra el flujo típico de un cliente dentro del
+sistema. Primero, el usuario realiza la \textbf{autenticación en el sistema} y
+luego pasa a la \textbf{creación de un pedido}, donde selecciona productos y
+combos. Una vez definido, se realiza la \textbf{confirmación del pedido}. En
+este punto se verifica si el pedido fue cancelado: en caso afirmativo, el flujo
+retorna a la etapa de creación; en caso negativo, el cliente continúa con la
+\textbf{realización del pago}. 
+
+Tras el pago, el pedido pasa a la etapa de \textbf{preparación}, luego a
+\textbf{pedido listo para entrega} y finalmente a \textbf{pedido completado}
+una vez que el cliente retira su pedido.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{img/Diagrama-de-estados-productos}
-    \caption{Diagrama de Estados: Productos}
-    \label{fig:de3}
+    \includegraphics[width=0.7\textwidth]{img/diagrama_de_clases_stock}
+    \caption{Diagrama de Clases: Stock}
+    \label{fig:dc3}
 \end{figure}
 
-El siguiente diagrama modela la lógica de stock y precios del sistema. La interfaz
+
+El anterior diagrama modela la lógica de stock y precios del sistema. La interfaz
 \texttt{Stockable} abstrae a cualquier elemento cuya disponibilidad pueda consultarse,
 mientras que \texttt{Priceable} representa a los elementos que tienen un precio asociado.
 \texttt{OrderItem} es una clase abstracta que unifica el comportamiento de los ítems que
@@ -78,28 +81,67 @@ el stock físico (\texttt{quantity}), y los \texttt{Combo} se componen de varios
 \texttt{Product}. De esta forma, la disponibilidad de productos y combos se calcula siempre
 en función del stock real de los ingredientes.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.4\textwidth]{img/diagrama_de_clases_stock}
-    \caption{Diagrama de Clases: Stock}
-    \label{fig:dc3}
-\end{figure}
-
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\textwidth]{img/Diagrama-de-estados-Gestion-de-stock}
+    \includegraphics[width=0.8\textwidth]{img/Diagrama-de-estados-Gestion-de-stock}
     \caption{Diagrama de Estados: Stock}
     \label{fig:de4}
 \end{figure}
 
-\vfill
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{img/diagrama_de_clases_estado_de_una_orden}
+    \includegraphics[width=1\textwidth]{img/diagrama_clases_order.jpeg}
     \caption{Diagrama de Clases: Estados de una Orden}
     \label{fig:dc4}
 \end{figure}
-\vfill
+
+Este diagrama modela la lógica central de los pedidos y la aplicación de descuentos.
+La entidad \texttt{Order} representa un pedido realizado por un usuario (\texttt{userId}),
+para un determinado día (\texttt{day}) y con un estado de avance (\texttt{State}:
+\texttt{ORDERING}, \texttt{ORDERED}, \texttt{IN\_PROGRESS}, \texttt{COMPLETED},
+\texttt{CANCELED}). Cada pedido agrupa un conjunto de ítems (\texttt{OrderItem}),
+que pueden ser \texttt{Product} o \texttt{Combo}, y mantiene el método de pago
+seleccionado (\texttt{PaymentMethod}).
+
+Los productos y combos implementan la interfaz \texttt{Priceable} e indirectamente
+\texttt{Stockable}, permitiendo calcular el precio y verificar disponibilidad a
+partir de sus ingredientes. A nivel de descuentos, la clase abstracta
+\texttt{Discount} define la estructura general: un conjunto de \texttt{Requirement}
+(por ejemplo, \texttt{MinimumSpendRequirement} o \texttt{PaymentMethodsRequirement})
+que determinan cuándo el descuento es aplicable, y uno o más \texttt{PriceModifier}
+(\texttt{FixedPriceModifier}, \texttt{PercentagePriceModifier}) y \texttt{CartModifier}
+para modificar el precio final o el contenido del pedido. De esta forma,
+\texttt{Order} puede calcular su precio total combinando los ítems y los descuentos
+que cumplan con los requisitos definidos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/Diagrama-de-estados-productos}
+    \caption{Diagrama de Estados: Productos}
+    \label{fig:de3}
+\end{figure}
+
+Por ultimo, detallamos el flujo para la \textbf{gestión del menú}
+por parte del encargado. A partir de la decisión inicial (\emph{``Acción a
+realizar''}), se abren distintos caminos:
+
+\begin{itemize}
+  \item \textbf{Alta de producto}: se ingresan los datos del producto y luego
+        los ingredientes necesarios.
+  \item \textbf{Alta de combo}: se cargan los datos del combo y los productos
+        que lo componen.
+  \item \textbf{Modificación de producto o combo}: se selecciona el ítem a
+        modificar y se actualizan sus datos.
+  \item \textbf{Eliminación de producto}: se selecciona el producto y, si
+        corresponde, se eliminan los combos relacionados que lo utilizaban.
+  \item \textbf{Eliminación de combo}: se selecciona el combo a borrar.
+\end{itemize}
+
+Todos estos caminos confluyen finalmente en una actividad común de
+\textbf{verificar disponibilidad según stock}, donde el sistema recalcula qué
+productos y combos quedan disponibles en función de los ingredientes y
+productos vigentes.
+
 
 \newpage
